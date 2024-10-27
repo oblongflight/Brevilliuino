@@ -9,7 +9,10 @@
 ##### The Brew button (pin PC14) is now handled by the EasyButton library (because I'm not a real programmer); in the original code it was activated by a toggle switch but the Breville control panel switches are momentary. 
 ##### During brewing, the 3WV (three-way valve solenoid) is energized to allow flow to the grouphead; the grouphead pressure is released after brewing via the 2WV (two-way valve solenoid), via a relay actuated by pin PA8.
 
-
+![plumbing](/Plumbing.jpg)
 
 ## Other Notes
 **The entire system is powered by a relay controlled by an ESP32-S3 which also handles the grinder motor, control panel lights, and the grind scale. It interfaces with Google Home via SinricPro so that I can preheat the thermoblock and (once I integrate it) grind my coffee from bed. The code for this as well as a hardware schematic is available [here].**
+
+## Unaddressed Issues
+#### The temperature control has not been fully tuned yet and we are probably over- or undershooting the desired temperature in different flow states due to the location of the thermocouple and the ham-handed way I'm currently handling heating. The endgame is probably a flow-adjusted heating profile but I haven't gotten around to it yet and the coffee tastes good so far.
