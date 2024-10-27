@@ -1,0 +1,93 @@
+name: Compile Sketch
+
+on:
+  push:
+    branches: [dev, release/stm32-blackpill, fix/*]
+  pull_request:
+    branches: [dev, release/stm32-blackpill, fix/*]
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  coding-style:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Install eclint
+        run: |
+          npm install -g eclint
+
+      - name: Check coding style
+        run: |
+          eclint check $(sh .eclint-files.sh)
+
+  compile:
+    name: Compilation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - name: Main
+            command: "lego-stlink"
+          - name: Scales
+            command: "scales-calibration-stlink"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: actions/setup-python@v4
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+      - name: Install sonar-scanner
+        uses: SonarSource/sonarcloud-github-c-cpp@v1
+      - name: Run build-wrapper on ${{ matrix.environment.name }}
+        run: |
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} pio run -e ${{ matrix.environment.command }}
+        env:
+          PLATFORMIO_BUILD_SRC_FLAGS: -Wdouble-promotion -Wall -Werror
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+      - name: Run tests
+        run: pio test -e test
+  
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - "lego-stlink"
+          - "scales-calibration-stlink"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+      - name: Run static analysis on ${{ matrix.environment }}
+        run: pio check -e ${{ matrix.environment }} --fail-on-defect medium --fail-on-defect high
