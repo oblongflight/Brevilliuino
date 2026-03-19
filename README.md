@@ -2,9 +2,9 @@
 Gaggiuino started as a project to improve the Gaggia Classic and Classic Pro while keeping the machine appearance and button functionality as close as possible to the original. The Brevilliuino project adapts this codebase to the Breville Barista Express, with modifications to account for the differences in solenoid behavior, thermoblock characteristics, and steaming. This system works with Gaggiuino V2 only, the last release for which source code is available. The current codebase is specific to [GaggiaBoard_V3](https://github.com/banoz/CoffeeHat/tree/a1cdccbc4df707b2967d31b3c6e985c20c3fda71/Hardware/GaggiaBoard_V3) but could be adapted to a LEGO build or another PCB.
 
 ## Videos
-<iframe width="560" height="315" src="https://www.youtube.com/embed/H2L4D2zm28o?si=UxUSpOu5KN2fKarv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/whdXstpg9Sg?si=bX8wYvtfiZ9qXzZM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/k61pesONmEs?si=_LnAVRFJefaVF9Ds" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+Setup: https://youtu.be/H2L4D2zm28o?si=aGH3US8xOhCW5YPF
+Extraction: https://youtu.be/whdXstpg9Sg?si=ZHxnwxRaGmjHh70T
+Extraction Closeup: https://youtu.be/k61pesONmEs?si=90zq_SNvsNkk81pW
 
 ## Differences from Gaggiuino
 - The Breville Barista Express uses a pair of solenoids (one three-way valve and one two-way valve) and a manual switch to direct flow to the steam wand, hot water outlet, grouphead, or drip tray. It has a thermoblock for heating instead of a boiler.
